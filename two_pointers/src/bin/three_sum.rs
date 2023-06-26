@@ -1,9 +1,8 @@
 struct Solution;
 
 impl Solution {
-    pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
-        let mut nums = nums;
-        nums.sort();
+    pub fn three_sum(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
+        nums.sort_unstable();
 
         let mut res = vec![];
 
@@ -21,13 +20,12 @@ impl Solution {
                 let n_j = nums[j];
                 let n_k = nums[k];
                 let sum = n_i + n_j + n_k;
-                let triplet = vec![*n_i, n_j, n_k];
 
                 match sum.cmp(&0) {
                     std::cmp::Ordering::Greater => k -= 1,
                     std::cmp::Ordering::Less => j += 1,
                     std::cmp::Ordering::Equal => {
-                        res.push(triplet);
+                        res.push(vec![*n_i, n_j, n_k]);
                         j += 1;
                         while nums[j] == nums[j - 1] && j < k {
                             j += 1;
@@ -36,7 +34,7 @@ impl Solution {
                 }
             }
         }
-        dbg!(res)
+        res
     }
 }
 
