@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "leetcode"
+name = "arrays_and_hashing"
 version = "0.1.0"
