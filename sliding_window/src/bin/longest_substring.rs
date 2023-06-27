@@ -3,21 +3,20 @@ struct Solution;
 impl Solution {
     pub fn length_of_longest_substring(s: String) -> i32 {
         use std::collections::HashSet;
-        let mut length = 0;
-        let mut start = 0;
+        let mut set = HashSet::new();
+        let mut l = 0;
+        let mut res = 0;
 
-        for end in 0..=s.len() {
-            let substring = &s[start..end];
-            let unique_chars_in_substring = substring.chars().collect::<HashSet<_>>();
-
-            if substring.len() != unique_chars_in_substring.len() {
-                start += 1;
-            } else {
-                length = length.max(substring.len());
+        for r in 0..s.len() {
+            while set.contains(&s[r..r]) {
+                set.remove(&s[l..l]);
+                l += 1;
             }
+            set.insert(&s[r..r]);
+            res = res.max(r - l + 1);
         }
 
-        length as i32
+        res as i32
     }
 }
 
