@@ -2,21 +2,27 @@ struct Solution;
 
 impl Solution {
     pub fn length_of_longest_substring(s: String) -> i32 {
-        use std::collections::HashSet;
-        let mut set = HashSet::new();
+        use std::collections::HashMap;
+
+        let mut map: HashMap<char, usize> = HashMap::new();
         let mut l = 0;
         let mut res = 0;
 
-        for r in 0..s.len() {
-            while set.contains(&s[r..r]) {
-                set.remove(&s[l..l]);
-                l += 1;
+        for (r, c) in s.chars().enumerate() {
+            // get previous position of char if it has been seen before
+            if let Some(pos) = map.get(&c) {
+                // is the previous position larger or equal to the left pointer
+                if *pos >= l {
+                    // mark of end of substring, so update largest length
+                    res = res.max(r - l);
+                    // move left pointer one to the right to the previous position of
+                    // the char
+                    l = *pos + 1;
+                }
             }
-            set.insert(&s[r..r]);
-            res = res.max(r - l + 1);
+            map.insert(c, r);
         }
-
-        res as i32
+        res.max(s.len() - l) as i32
     }
 }
 
